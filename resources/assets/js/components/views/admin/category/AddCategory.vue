@@ -27,8 +27,8 @@
                 </select>
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputPassword1">Category Name</label>
-                  <input type="text" v-model="name" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                  <label for="CategoryName">Category Name</label>
+                  <input type="text" v-model="name" class="form-control" id="CategoryName" placeholder="Category Name">
                 </div>
               </div>
               <!-- /.box-body -->
@@ -49,6 +49,7 @@
                 name: '',
             }
         },
+
         methods: {
             StoreCate: function (event) {
                 axios.post('./api/category', {
@@ -62,6 +63,7 @@
                     console.log(error)
                 })
             },
+
             CheckForm: function (event) {
                 let that = this;
                 if (!that.name) {
@@ -70,6 +72,16 @@
                     that.StoreCate();
                 }
                 event.preventDefault()
+            },
+
+            ListCate: function () {
+                axios.get('./api/category')
+                .then(function (response) {
+                    console.log(response.data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
             }
         }
     }

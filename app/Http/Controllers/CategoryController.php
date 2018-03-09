@@ -17,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Category::all());
     }
 
     /**
@@ -44,6 +44,7 @@ class CategoryController extends Controller
             Log::error($e);
             return response()->json('Store False');
         }
+        
         return response()->json($category);
     }
 
