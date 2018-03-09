@@ -20,9 +20,9 @@ class CreateBooksTable extends Migration
             $table->string('description');
             $table->integer('number_of_page');
             $table->integer('count_vote');
-            $table->integer('rate', 8, 2);
+            $table->integer('rate');
             $table->string('image');
-            $table->integer('category_id')->unsigned();
+            $table->integer('category_id');
             $table->timestamps();
             $table->softDeletes();
 

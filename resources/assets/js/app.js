@@ -18,7 +18,7 @@ import App from './components/App';
 import Router from './routers/index.js';
 
 var vm = new Vue({
-	router: Router,
-	el: '#app',
-	render: h => h(App)
+    router: Router,
+    el: '#app',
+    render: h => h(App)
 });
