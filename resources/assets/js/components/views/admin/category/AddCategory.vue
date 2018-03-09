@@ -5,6 +5,10 @@
               <h3 class="box-title">Quick Example</h3>
             </div>
             <div class="box-header with-border">
+                <div v-if="success" class="alert alert-success alert-dismissible" >
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-check"></i>{{ success }} </h4>                
+                </div>
                 <p v-if="errors.length">
                     <b>Please correct the following error(s):</b>
                     <ul>
@@ -12,23 +16,18 @@
                     </ul>
               </p>
             </div>
-            <!-- /.box-header -->
+            <!-- /.box-header -->   
             <!-- form start -->
             <form role="form">
               <div class="box-body">
                 <div class="form-group">
-                <label>Select</label>
-                <select v-model="parentId"class="form-control">
-                    <option value="0">option 1</option>
-                    <option value="1">option 2</option>
-                    <option value="2">option 3</option>
-                    <option value="3">option 4</option>
-                    <option value="4">option 5</option>
-                </select>
+                    <label>Select</label>
+                    <select name="parentId" class="form-control" v-model="parentId" v-html="category">                        
+                    </select>
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputPassword1">Category Name</label>
-                  <input type="text" v-model="name" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                  <label for="CategoryName">Category Name</label>
+                  <input type="text" v-model="name" class="form-control" id="CategoryName" placeholder="Category Name">
                 </div>
               </div>
               <!-- /.box-body -->
@@ -47,8 +46,15 @@
                 errors: [],
                 parentId : 0,
                 name: '',
+                category: '',
+                success: null,
             }
         },
+
+        beforeMount: function () {
+             this.category = this.ListCate();   
+        },
+
         methods: {
             StoreCate: function (event) {
                 axios.post('./api/category', {
@@ -56,20 +62,37 @@
                     name: this.name
                 })
                 .then(function (response) {
+                    
+                    if(!this.success) {
+                       this.success.push('Category Add Succesfully!');  
+                    }
                     console.log(response.data);
                 })
                 .catch(function (error) {
                     console.log(error)
                 })
             },
+
             CheckForm: function (event) {
                 let that = this;
+                that.errors = [];
                 if (!that.name) {
                     that.errors.push('Category Name is required');
                 } else {
                     that.StoreCate();
                 }
                 event.preventDefault()
+            },
+
+            ListCate: function () {
+                let that = this;
+                axios.get('./api/category')
+                .then(function (response) {
+                    that.category = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
             }
         }
     }
