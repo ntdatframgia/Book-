@@ -9,12 +9,6 @@
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <h4><i class="icon fa fa-check"></i>{{ message }} </h4>                
                 </div>
-                <p v-if="errors.length">
-                    <b>Please correct the following error(s):</b>
-                    <ul>
-                        <li v-for="error in errors">{{ error }}</li>
-                    </ul>
-              </p>
             </div>
             <!-- /.box-header -->   
             <!-- form start -->
@@ -25,29 +19,40 @@
                     <select name="parentId" class="form-control" v-model="parentId" v-html="category">                        
                     </select>
                 </div>
-                <div class="form-group">
-                  <label for="CategoryName">Category Name</label>
-                  <input type="text" v-model="name" class="form-control" id="CategoryName" placeholder="Category Name">
+                <div class="form-group" v-bind:class="{ 'form-group--error': $v.name.$error }">
+                  <label for="CategoryName">Category Name</label>   
+                  <input type="text" v-model="name"  v-model.trim="name" @blur="$v.name.$touch()" class="form-control" id="CategoryName" placeholder="Category Name">
+                  <span class="form-group__message" v-if="!$v.name.required">Field is required</span>
+                  <span class="form-group__message" v-if="!$v.name.minLength">Name must have at least {{$v.name.$params.minLength.min}} letters.</span>
                 </div>
               </div>
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button @click="CheckForm" type="submit" class="btn btn-primary">Submit</button>
+                <button @click.prevent="StoreCate" :disabled="$v.name.$invalid" type="submit" class="btn btn-primary">Submit</button>
               </div>
             </form>
           </div>
 	</div>
 </template>
 <script>
+    import { required, minLength } from 'vuelidate/lib/validators';
+
     export default {
         data: function() {
             return {
                 errors: [],
                 parentId : 0,
                 name: '',
+                age: '',
                 category: '',
-                message: '',
+            }
+        },
+
+        validations: {
+            name: {
+                required,
+                minLength: minLength(4),
             }
         },
 
@@ -67,19 +72,8 @@
                        this.message = 'Category Add Succesfully!';  
                     }
                     console.log(response.data);
-                })
-               
-            },
-
-            CheckForm: function (event) {
-                let that = this;
-                that.errors = [];
-                if (!that.name) {
-                    that.errors.push('Category Name is required');
-                } else {
-                    that.StoreCate();
-                }
-                event.preventDefault()
+                });
+                event.preventDefault();
             },
 
             ListCate: function () {

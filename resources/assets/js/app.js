@@ -16,6 +16,8 @@ window.Vue = require('vue');
 import Vue from 'vue'
 import App from './components/App';
 import Router from './routers/index.js';
+import Vuelidate from 'vuelidate';
+Vue.use(Vuelidate);
 
 var vm = new Vue({
     router: Router,
