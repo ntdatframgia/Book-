@@ -7,6 +7,7 @@ use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Exception;
 use Log;
+use Cache;
 
 class CategoryController extends Controller
 {
@@ -17,7 +18,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return response()->json(Category::all());
+        $category = Category::with('childrenRecursion')->where('parent_id', 0)->get();
+        
+        Cache::rememberForever('category', function () use($category) {           
+            return view('category')->with('categories', $category)->render();
+        });      
+        return $he = Cache::get('category');
     }
 
     /**
