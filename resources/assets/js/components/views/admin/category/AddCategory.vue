@@ -56,6 +56,13 @@
             }
         },
 
+        validations: {
+            name: {
+                required,
+                minLength: minLength(4),
+            }
+        },
+
         beforeMount: function () {
              this.category = this.ListCate();   
         },
