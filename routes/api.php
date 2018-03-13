@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['api'], function () {
+    route::get('category', 'CategoryController@listCategory');
     route::resource('category', 'CategoryController');
 });
 

@@ -27,7 +27,7 @@
 
         <!-- Default box -->
         <div class="box">
-         <router-view></router-view>
+         <router-view ></router-view>
         </div>
         <!-- /.box -->
 

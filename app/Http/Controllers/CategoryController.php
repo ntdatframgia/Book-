@@ -19,11 +19,8 @@ class CategoryController extends Controller
     public function index()
     {
         $category = Category::with('childrenRecursion')->where('parent_id', 0)->get();
-        
-        Cache::rememberForever('category', function () use($category) {           
-            return view('category')->with('categories', $category)->render();
-        });      
-        return $he = Cache::get('category');
+        $stt = 1;
+        return view('gridCategory', ['categories'=> $category, 'char' => '','stt' => $stt, 'parent_id' => 0]);
     }
 
     /**
@@ -63,6 +60,16 @@ class CategoryController extends Controller
     public function show($id)
     {
         //
+    }
+
+    public function listCategory()
+    {
+        $category = Category::with('childrenRecursion')->where('parent_id', 0)->get();
+        
+        Cache::rememberForever('category', function () use($category) {           
+            return view('category')->with('categories', $category)->render();
+        });   
+        return $selectCategory = Cache::get('category');
     }
 
     /**

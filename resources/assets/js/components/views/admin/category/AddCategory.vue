@@ -9,6 +9,12 @@
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <h4><i class="icon fa fa-check"></i>{{ message }} </h4>                
                 </div>
+                <p v-if="errors.length">
+                    <b>Please correct the following error(s):</b>
+                    <ul>
+                        <li v-for="error in errors">{{ error }}</li>
+                    </ul>
+                </p>
             </div>
             <!-- /.box-header -->   
             <!-- form start -->
@@ -46,6 +52,7 @@
                 name: '',
                 age: '',
                 category: '',
+                message: '',
             }
         },
 
@@ -76,16 +83,20 @@
                 .then((response) => {
                     this.message = null;
                     if(!this.message) {
-                       this.message = 'Category Add Succesfully!';  
-                    }
+                       this.message = 'Category Add Succesfully!';
+                       this.errors =[];  
+                    }                    
                     console.log(response.data);
+                })
+                .catch((error) => {
+                    this.errors = error.response.data.errors.name
                 });
                 event.preventDefault();
             },
 
             ListCate: function () {
                 let that = this;
-                axios.get('./api/category')
+                axios.get('./api/listCategory')
                 .then(function (response) {
                     that.category = response.data;
                 })

@@ -17,7 +17,8 @@ import Vue from 'vue'
 import App from './components/App';
 import Router from './routers/index.js';
 import Vuelidate from 'vuelidate';
-Vue.use(Vuelidate);
+
+Vue.use(Vuelidate, Router);
 
 var vm = new Vue({
     router: Router,
